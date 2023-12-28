@@ -1,7 +1,7 @@
 # Force Subscribe Bot 🤖
 **A Telegram Bot to force users to join a specific channel before sending messages in a group.**
 
-## [🌟 Join Our Channel 🌟](https://t.me/ACE_ML)
+## [🌟 Join Our Channel 🌟](https://t.me/CloudPolar)
 
 ## 🎉 Whats New?
 - Heroku Eco Plan Support
@@ -17,7 +17,7 @@
 
 <br>
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/TheFlashSpeedster/ACE-Force-Subscribe)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://gitlab.com/polarcloud/ForceSub)
 </details>
 
 <details>
@@ -28,11 +28,11 @@
 
 - Clone this repo
 ```
-git clone https://github.com/TheFlashSpeedster/ACE-Force-Subscribe
+git clone https://gitlab.com/polarcloud/ForceSub
 ```
 - Change directory
 ```
-cd ACE-Force-Subscribe
+cd ForceSub
 ```
 - Install requirements
 ```
@@ -58,9 +58,9 @@ python3 bot.py
 - Run this Command
 
 ```
-git clone https://github.com/TheFlashSpeedster/ACE-Force-Subscribe && cd ACE-Force-Subscribe && pip install -r requirements.txt && python3 bot.py
+git clone https://gitlab.com/polarcloud/ForceSub && cd ForceSub && pip install -r requirements.txt && python3 bot.py
 ```
-ℹ️ Replace `TheFlashSpeedster` with your GitHub Username
+ℹ️ Replace `polarcloud` with your GitLab Username
 
 </details>
 
@@ -68,11 +68,10 @@ git clone https://github.com/TheFlashSpeedster/ACE-Force-Subscribe && cd ACE-For
 
 - `BOT_TOKEN` Get it from [@BotFather](https://t.me/BotFather)
 - `UPDATES_CHANNEL` Your Channel Username (without @)
-- `DATABASE_URL` Get it from [ElephantSQL 🐘](https://customer.elephantsql.com)
+- `MONGODB_URL` Get it from [MongoDB Atlas](https://cloud.mongodb.com)
 - `APP_ID` Get it from [my.telegram.org](https://my.telegram.org)
 - `API_HASH` Get it from [my.telegram.org](https://my.telegram.org)
 - `SUDO_USERS` Your User ID. Use [@MissRoseBot](https://t.me/MissRoseBot)
 
-😏 DATABASE_URL not required for Heroku.
 
-## [🌟 Join Our Channel 🌟](https://t.me/ACE_ML)
+## [🌟 Join Our Channel 🌟](https://t.me/CloudPolar)
