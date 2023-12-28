@@ -39,7 +39,7 @@
             "value": "",
             "required": false
         },
-        "DATABASE_URL": {
+        "MONGODB_URL": {
             "description": "PostgreSQL Database URL from ElephantSQL",
             "value": "",
             "required": true
