@@ -1,30 +1,39 @@
 import logging
-import os
-from Config import Messages as tr
-from Config import Config as C
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from pyrogram.errors.exceptions.bad_request_400 import UserNotParticipant, UsernameNotOccupied, ChatAdminRequired, PeerIdInvalid
-UPDATES_CHANNEL = C.UPDATES_CHANNEL
+from pyrogram.errors.exceptions.bad_request_400 import UserNotParticipant
+from pymongo import MongoClient
+from Config import Config, Messages as tr
+
+UPDATES_CHANNEL = Config.UPDATES_CHANNEL
 logging.basicConfig(level=logging.INFO)
+
+# Configuración de la conexión a MongoDB
+client = MongoClient(Config.MONGODB_URL)
+db = client.get_database()
+
+# Define la colección para 'forceSubscribe'
+force_subscribe_collection = db.forceSubscribe
 
 @Client.on_message(filters.incoming & filters.command(['start']) & filters.private)
 async def _start(client, message):
     update_channel = UPDATES_CHANNEL
+    chat_id = message.chat.id
+
     if update_channel:
         try:
-            user = await client.get_chat_member(update_channel, message.chat.id)
+            user = await client.get_chat_member(update_channel, chat_id)
             if user.status == "kicked":
-               await client.send_message(
-                   chat_id=message.chat.id,
-                   text="Sorry Sir, You are Banned to use me. Contact my [Support Group](https://t.me/ACE_OffTopic).",
-                   parse_mode="markdown",
-                   disable_web_page_preview=True
-               )
-               return
+                await client.send_message(
+                    chat_id=chat_id,
+                    text="Sorry Sir, You are Banned to use me. Contact my [Support Group](https://t.me/CloudPolar).",
+                    parse_mode="markdown",
+                    disable_web_page_preview=True
+                )
+                return
         except UserNotParticipant:
             await client.send_message(
-                chat_id=message.chat.id,
+                chat_id=chat_id,
                 text="**🙁 Join My Channel To Use This Bot!**",
                 reply_markup=InlineKeyboardMarkup(
                     [
@@ -37,39 +46,42 @@ async def _start(client, message):
             )
             return
         except Exception:
-            await client.send_message(message.chat.id,
+            await client.send_message(
+                chat_id=chat_id,
                 text=tr.START_MSG.format(message.from_user.first_name, message.from_user.id),
-	        reply_markup=InlineKeyboardMarkup(
+                reply_markup=InlineKeyboardMarkup(
                     [
                         [
-                           InlineKeyboardButton("✨ Updates", url="https://t.me/ACE_ML"),
-                           InlineKeyboardButton("⛑️ Support", url="https://t.me/ACE_OffTopic")
-                      ],
-                     [
-                           InlineKeyboardButton("🧑‍💻 Developer", url="https://t.me/AceContactBot")
-                     ]
-                 ]
-             ),
-        parse_mode="markdown",
-        reply_to_message_id=message.message_id
-        )
+                            InlineKeyboardButton("✨ Updates", url="https://t.me/CPMLX"),
+                            InlineKeyboardButton("⛑️ Support", url="https://t.me/CloudPolar")
+                        ],
+                        [
+                            InlineKeyboardButton("🧑‍💻 Developer", url="https://t.me/PolarPMBot")
+                        ]
+                    ]
+                ),
+                parse_mode="markdown",
+                reply_to_message_id=message.message_id
+            )
             return
-    await client.send_message(message.chat.id,
+
+    await client.send_message(
+        chat_id=chat_id,
         text=tr.START_MSG.format(message.from_user.first_name, message.from_user.id),
-	reply_markup=InlineKeyboardMarkup(
+        reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("✨ Updates", url="https://t.me/ACE_ML"),
-                    InlineKeyboardButton("⛑️ Support", url="https://t.me/ACE_OffTopic")
+                    InlineKeyboardButton("✨ Updates", url="https://t.me/CPMLX"),
+                    InlineKeyboardButton("⛑️ Support", url="https://t.me/CloudPolar")
                 ],
                 [
-                    InlineKeyboardButton("🧑‍💻 Developer", url="https://t.me/AceContactBot")
+                    InlineKeyboardButton("🧑‍💻 Developer", url="https://t.me/PolarPMBot")
                 ]
             ]
         ),
         parse_mode="markdown",
         reply_to_message_id=message.message_id
-        )
+    )
 
 
 @Client.on_message(filters.incoming & filters.command(['source_code']) & filters.private)
@@ -79,14 +91,14 @@ async def _source_code(client, message):
 	reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("📦 Source Code", url="https://t.me/ACE_ML")
+                    InlineKeyboardButton("📦 Source Code", url="https://t.me/CloudPolar")
                 ],
                 [
-                    InlineKeyboardButton("✨ Updates", url="https://t.me/ACE_ML"),
-                    InlineKeyboardButton("⛑️ Support", url="https://t.me/ACE_OffTopic")
+                    InlineKeyboardButton("✨ Updates", url="https://t.me/CPMLX"),
+                    InlineKeyboardButton("⛑️ Support", url="https://t.me/CloudPolar")
                 ],
                 [
-                    InlineKeyboardButton("👨‍💻 Developer", url="https://t.me/FlashSpeedster1")
+                    InlineKeyboardButton("👨‍💻 Developer", url="https://t.me/PolarPMBot")
                 ]
             ]
         ),
@@ -103,7 +115,7 @@ async def _help(client, message):
             if user.status == "kicked":
                await client.send_message(
                    chat_id=message.chat.id,
-                   text="Sorry Sir, You are Banned to use me. Contact my [Support Group](https://t.me/ACE_OffTopic).",
+                   text="Sorry Sir, You are Banned to use me. Contact my [Support Group](https://t.me/CloudPolar).",
                    parse_mode="markdown",
                    disable_web_page_preview=True
                )
@@ -125,7 +137,7 @@ async def _help(client, message):
         except Exception:
             await client.send_message(
                 chat_id=message.chat.id,
-                text="Hey use this command in my pm. \nFor more help ask in my [Support Group](https://t.me/ACE_OffTopic).",
+                text="Hey use this command in my pm. \nFor more help ask in my [Support Group](https://t.me/CloudPolar).",
                 parse_mode="markdown",
                 disable_web_page_preview=True)
             return

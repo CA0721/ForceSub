@@ -1,42 +1,39 @@
-from sqlalchemy import Column, String, Numeric, Boolean
-from sql_helpers import SESSION, BASE
+from pymongo import MongoClient
+from Config import Config
 
-class forceSubscribe(BASE):
-    __tablename__ = "forceSubscribe"
-    chat_id = Column(Numeric, primary_key=True)
-    channel = Column(String)
+# Configuración de la conexión a MongoDB
+client = MongoClient(Config.MONGODB_URL)
+db = client.get_database()
 
-    def __init__(self, chat_id, channel):
-        self.chat_id = chat_id
-        self.channel = channel
+# Define la colección para 'forceSubscribe'
+force_subscribe_collection = db.forceSubscribe
 
-
-forceSubscribe.__table__.create(checkfirst=True)
-
+# Define la colección para 'Channel'
+channel_collection = db.channel
 
 def fs_settings(chat_id):
     try:
-        return SESSION.query(forceSubscribe).filter(forceSubscribe.chat_id == chat_id).one()
+        # Intenta obtener las configuraciones relacionadas con el chat_id desde MongoDB
+        return force_subscribe_collection.find_one({"chat_id": chat_id})
     except:
         return None
-    finally:
-        SESSION.close()
-
 
 def add_channel(chat_id, channel):
-    adder = SESSION.query(forceSubscribe).get(chat_id)
-    if adder:
-        adder.channel = channel
+    chat = force_subscribe_collection.find_one({"chat_id": chat_id})
+
+    if chat:
+        # Agrega el nuevo canal si no está presente
+        channels = chat.get("channels", [])
+        if channel not in channels:
+            channels.append(channel)
+            force_subscribe_collection.update_one(
+                {"chat_id": chat_id},
+                {"$set": {"channels": channels}}
+            )
     else:
-        adder = forceSubscribe(
-            chat_id,
-            channel
-        )
-    SESSION.add(adder)
-    SESSION.commit()
+        # Si el chat_id no existe, crea un nuevo registro en MongoDB
+        force_subscribe_collection.insert_one({"chat_id": chat_id, "channels": [channel]})
 
 def disapprove(chat_id):
-    rem = SESSION.query(forceSubscribe).get(chat_id)
-    if rem:
-        SESSION.delete(rem)
-        SESSION.commit()
+    # Elimina el registro asociado con el chat_id en MongoDB
+    force_subscribe_collection.delete_one({"chat_id": chat_id})

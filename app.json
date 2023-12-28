@@ -1,5 +1,5 @@
 {
-    "name": "ACE - Force Subscribe Bot",
+    "name": "Force Subscribe Bot",
     "description": "Python Based Telegram Bot To Force Users to Subscribe a Channel",
     "logo": "",
     "keywords": [
@@ -10,9 +10,9 @@
         "FSub",
         "ForceSubscribe"
     ],
-    "repository": "https://github.com/TheFlashSpeedster/ACE-Force-Subscribe",
-    "website": "https://t.me/ACE_ML",
-    "success_url": "https://t.me/ACE_ML",
+    "repository": "https://gitlab.com/polarcloud/",
+    "website": "https://t.me/CloudPolar",
+    "success_url": "https://t.me/CPMLX",
     "env": {
         "API_HASH": {
             "description": "Get it from my.telegram.org",
